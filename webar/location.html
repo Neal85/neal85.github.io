@@ -1,39 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>WebAR Location</title>
-    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-    <script src='https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex-location-only.js'></script>
-    <script src='https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js'></script>
-</head>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/jeromeetienne/AR.js/2.1.8/aframe/build/aframe-ar.js"></script>
+    <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
 
-<body>
-    <a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false'
-        renderer='antialias: true; alpha: true'>
-        <a-camera gps-new-camera='gpsMinDistance: 5'></a-camera>
-        <a-entity material='color: red' geometry='primitive: box'
-            gps-new-entity-place="latitude: 33.839717; longitude: 135.774165" scale="10 10 10"></a-entity>
+    <style>
+        .pos-msg {
+            position: fixed;
+            top: 0px;
+            right: 0px;
+            background: #000;
+            color: #fff;
+            min-height: 28px;
+            width: 100%;
+            z-index: 1000;
+        }
+    </style>
+
+  </head>
+
+  <body style='margin: 0; overflow: hidden;'>
+    <div id="pos" class="pos-msg"></div>
+
+    <a-scene arjs="sourceType: webcam; debugUIEnabled: false;">
+        <a-box position="0 1 -5" rotation="10 30 0" color="#4CC3D9" gps-entity-place="latitude: 31.2513456; longitude: 121.4936387"></a-box>
+      <a-camera gps-camera rotation-reader></a-camera>
     </a-scene>
 
-    <script type="javascript/text">
-        window.onload = function() {
+    <script>
+        var target = {
+            latitude: 31.2513456,
+            longitude: 121.4936387,
+        };
+      window.onload = function () {
+            var entity = document.querySelector("a-box");
+            let posDiv = document.getElementById("pos");
+
+            posDiv.innerText = `Load`;
+
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
+                navigator.geolocation.getCurrentPosition(function (position) {
                     var latitude = position.coords.latitude;
                     var longitude = position.coords.longitude;
-                    var entity = document.querySelector('a-entity');
-                    entity.setAttribute('gps-new-entity-place', `latitude: ${latitude}; longitude: ${longitude}`);
-                }, function(error) {
-                    console.log('Geolocation failed: ' + error.message);
+
+                    target = {
+                        latitude: latitude,
+                        longitude: longitude,
+                    };
+
+                    entity.setAttribute('gps-entity-place', `latitude: ${latitude}; longitude: ${longitude}`);
+
+                    posDiv.innerText = `latitude: ${latitude}; longitude: ${longitude};`;
+
+                }, function (error) {
+                    posDiv.innerText = 'Geolocation failed: ' + error.message;
                 });
+
+
+                // navigator.geolocation.watchPosition(
+                //     function (position) {
+                //         var latitude = position.coords.latitude;
+                //         var longitude = position.coords.longitude;
+
+                //         var distance = getDistanceFromLatLonInKm(
+                //             latitude,
+                //             longitude,
+                //             target.latitude,
+                //             target.longitude
+                //         );
+
+                //         if (distance > 0.005) {
+                //             entity.setAttribute("visible", "false");
+                //         } else {
+                //             entity.setAttribute("visible", "true");
+                //         }
+
+                //         posDiv.innerText = `latitude: ${latitude}; longitude: ${longitude}; distance: ${distance} km`;
+                //     },
+                //     function (error) {
+                //         posDiv.innerText = "Geolocation failed: " + error.message;
+                //     },
+                //     {
+                //         enableHighAccuracy: true,
+                //         maximumAge: 10000,
+                //         timeout: 27000,
+                //     }
+                // );
             } else {
-                console.log('Geolocation is not supported by this browser.');
+                posDiv.innerText = "Geolocation is not supported by this browser.";
             }
         };
-    </script>
-</body>
 
+        // 计算两个经纬度之间的距离（单位：千米）
+        function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+            var R = 6371; // 地球半径（单位：千米）
+            var dLat = deg2rad(lat2 - lat1);
+            var dLon = deg2rad(lon2 - lon1);
+            var a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(deg2rad(lat1)) *
+                Math.cos(deg2rad(lat2)) *
+                Math.sin(dLon / 2) *
+                Math.sin(dLon / 2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            var d = R * c; // 距离（单位：千米）
+            return d;
+        }
+
+        // 将角度转换为弧度
+        function deg2rad(deg) {
+            return deg * (Math.PI / 180);
+        }
+    </script>
+  </body>
 </html>
