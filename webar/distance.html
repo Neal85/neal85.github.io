@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WebAR Direction</title>
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex-location-only.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+</head>
+
+<body>
+    <a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false'
+        renderer='antialias: true; alpha: true' cursor='rayOrigin: mouse' raycaster='near: 0; far:10000'>
+        <a-camera gps-new-camera='gpsMinDistance: 5'></a-camera>
+    </a-scene>
+    <div id='setloc'
+        style='position:absolute; left: 10px; bottom: 2%; z-index:999; background-color: blue; color: white; padding: 10px'>
+        Lat:<input id="lat" value="51.049" />
+        Lon: <input id="lon" value="-0.723" />
+        Min Acc: <input id='minacc' value='1000' /> <input type='button' id='go' value='go' />
+    </div>
+</body>
+
+</html>
+
+<script>
+    AFRAME.registerComponent("clicker", {
+        init: function () {
+            this.el.addEventListener("click", e => {
+                const dist = this.el.components["gps-new-entity-place"].distance;
+                alert(dist === undefined ? "Please move to a new location to obtain the distance" : `This object is ${dist} metres away.`);
+            });
+        }
+    });
+
+
+    window.onload = () => {
+        let testEntitiesAdded = false;
+        alert('If testing the lat/lon manual input on a mobile device, please turn off your GPS to avoid the real location being detected.');
+        const el = document.querySelector("[gps-new-camera]");
+        el.addEventListener("gps-camera-update-position", e => {
+            if (!testEntitiesAdded) {
+                // Add four boxes to the north (red), south (yellow), west (blue)
+                // and east (red) of the initial GPS position
+                const properties = [{
+                    color: 'red',
+                    latDis: 0.001,
+                    lonDis: 0
+                }, {
+                    color: 'yellow',
+                    latDis: -0.001,
+                    lonDis: 0
+                }, {
+                    color: 'blue',
+                    latDis: 0,
+                    lonDis: -0.001
+                }, {
+                    color: 'green',
+                    latDis: 0,
+                    lonDis: 0.001
+                }
+                ];
+                for (const prop of properties) {
+                    const entity = document.createElement("a-box");
+                    entity.setAttribute("scale", {
+                        x: 20,
+                        y: 20,
+                        z: 20
+                    });
+                    entity.setAttribute('material', { color: prop.color });
+                    entity.setAttribute('gps-new-entity-place', {
+                        latitude: e.detail.position.latitude + prop.latDis,
+                        longitude: e.detail.position.longitude + prop.lonDis
+                    });
+                    entity.setAttribute('clicker', {});
+                    document.querySelector("a-scene").appendChild(entity);
+                }
+                testEntitiesAdded = true;
+            }
+        });
+
+        document.getElementById("go").addEventListener("click", e => {
+            const lat = document.getElementById('lat').value;
+            const lon = document.getElementById('lon').value;
+            const minacc = document.getElementById('minacc').value;
+
+            el.setAttribute('gps-new-camera', { simulateLatitude: lat, simulateLongitude: lon, positionMinAccuracy: minacc });
+        });
+    };
+
+</script>
