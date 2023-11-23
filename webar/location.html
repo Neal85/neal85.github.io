@@ -27,8 +27,7 @@
 
     <div id="pos" class="pos-msg"></div>
 
-    <a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false'
-        renderer='antialias: true; alpha: true'>
+    <a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false' renderer='antialias: true; alpha: true'>
         <a-camera gps-new-camera='gpsMinDistance: 5'></a-camera>
     </a-scene>
 
@@ -46,7 +45,6 @@
                 z: 20
             });
             entity.setAttribute('material', { color: 'red' });
-            entity.setAttribute('rotation', { x: 10, y: 30, z: 0 });
             entity.setAttribute('gps-new-entity-place', {
                 latitude: lat + 0.001,
                 longitude: lon
@@ -59,7 +57,7 @@
             const posDiv = document.getElementById("pos");
             posDiv.innerText = `Load`;
 
-            let testEntitiesAdded = false;
+            var testEntitiesAdded = false;
             const el = document.querySelector("[gps-new-camera]");
 
             el.addEventListener("gps-camera-update-position", e => {
