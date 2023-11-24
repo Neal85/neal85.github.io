@@ -26,7 +26,7 @@
 
     <a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false' renderer='antialias: true; alpha: true'>
         <a-entity 
-            scale="10 10 10" 
+            scale="1 1 1" 
             animation-mixer 
             gltf-model="url(./assets/magnemite/scene.gltf)"></a-entity>
         <a-camera gps-new-camera></a-camera>
@@ -54,9 +54,10 @@
                             longitude: longitude,
                         };
 
+                        entity.setAttribute('gps-entity-place', `latitude: ${latitude}; longitude: ${longitude}`);
                         entity.setAttribute('gps-new-entity-place', `latitude: ${latitude}; longitude: ${longitude}`);
 
-                        console.log(`Lat: ${latitude}; Lon: ${longitude};`);
+                        console.log(`Lat: ${latitude}; Lon: ${longitude};`, entity);
                         posDiv.innerText = `Lat: ${latitude}; Lon: ${longitude};`;
 
                     }, function (error) {
