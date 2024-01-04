@@ -45,6 +45,10 @@
                 z: 20
             });
             entity.setAttribute('material', { color: 'red' });
+            entity.setAttribute('gps-entity-place', {
+                latitude: lat + 0.001,
+                longitude: lon
+            });
             entity.setAttribute('gps-new-entity-place', {
                 latitude: lat + 0.001,
                 longitude: lon

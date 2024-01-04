@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WebAR ThreeJS</title>
+    <script type="importmap">
+        {
+          "imports": {
+            "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
+            "tar": "./three_ar.js"
+          }
+        }
+      </script>
+      <style>
+        body {
+          margin: 0;
+        }
+    
+        canvas {
+          width: 100vw;
+          height: 100vh;
+          display: block;
+        }
+      </style>
+</head>
+
+<body>
+    <video id='video1' autoplay playsinline style='display:none'></video>
+    <canvas id="canvas1" style='background-color: black; width:100%; height:100%; display:block'></canvas>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { WebcamRenderer } from 'tar';
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+
+        const webcam = new WebcamRenderer(renderer, '#video1');
+
+        
+        const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+        const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+        const cube = new THREE.Mesh( geometry, material );
+        scene.add( cube );
+
+        camera.position.z = 5;
+
+
+        function animate() {
+            requestAnimationFrame( animate );
+
+            cube.rotation.x += 0.01;
+            cube.rotation.y += 0.01;
+
+            renderer.render( scene, camera );
+            webcam.update();
+        }
+
+
+        window.onload = function() {
+            document.body.appendChild(renderer.domElement);
+            animate();
+        };
+    </script>
+</body>
+
+</html>

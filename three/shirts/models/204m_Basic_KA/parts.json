@@ -1,0 +1,62 @@
+{
+    "LeftArm": {
+        "hoehenfaktor": 0.560619037213621,
+        "groesseX": 2048,
+        "groesseY": 1024,
+        "breiteCM": 50.56885,
+        "hoeheCM": 28.34986,
+        "standardVordrehungVonNeuPlatziertenObjektenImKonfi": 0,
+        "PatternAnker": {
+            "CenterX": 0.449065778636453,
+            "CenterY": 0.781723437082229
+        }
+    },
+    "RightArm": {
+        "hoehenfaktor": 0.560597569334171,
+        "groesseX": 2048,
+        "groesseY": 1024,
+        "breiteCM": 50.56886,
+        "hoeheCM": 28.34878,
+        "standardVordrehungVonNeuPlatziertenObjektenImKonfi": 0,
+        "PatternAnker": {
+            "CenterX": 0.550868261613965,
+            "CenterY": 0.781764859016861
+        }
+    },
+    "Front": {
+        "hoehenfaktor": 1.49220028887819,
+        "groesseX": 2048,
+        "groesseY": 2048,
+        "breiteCM": 51.925,
+        "hoeheCM": 77.4825,
+        "standardVordrehungVonNeuPlatziertenObjektenImKonfi": 0,
+        "PatternAnker": {
+            "CenterX": 0.500005392392875,
+            "CenterY": 0.22616642467654
+        }
+    },
+    "Back": {
+        "hoehenfaktor": 1.25158912005053,
+        "groesseX": 2048,
+        "groesseY": 2048,
+        "breiteCM": 63.3275,
+        "hoeheCM": 79.26001,
+        "standardVordrehungVonNeuPlatziertenObjektenImKonfi": 0,
+        "PatternAnker": {
+            "CenterX": 0.5,
+            "CenterY": 7.62996371057736E-02
+        }
+    },
+    "Collar": {
+        "hoehenfaktor": 8.83600892349416E-02,
+        "groesseX": 2048,
+        "groesseY": 256,
+        "breiteCM": 57.1525,
+        "hoeheCM": 5.05,
+        "standardVordrehungVonNeuPlatziertenObjektenImKonfi": 0,
+        "PatternAnker": {
+            "CenterX": 0.499978128690783,
+            "CenterY": 0.500001980198022
+        }
+    }
+}
