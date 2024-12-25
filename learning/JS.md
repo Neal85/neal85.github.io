@@ -1,6 +1,23 @@
 # Javascript
 
 
+## 模块
+1. CommonJS（主要用于 Node.js 环境）
+   module.exports = {};
+   const m = require('ModuleName')
+
+2. AMD（Asynchronous Module Definition，主要用于浏览器环境）
+   define(['dependency'], fn);
+   require(['myModule'], function(myModule) {});
+
+3. UMD（Universal Module Definition，兼容 CommonJS 和 AMD）
+   
+4. ES6 模块（现代 JavaScript 标准）
+   export fn name;
+   import { fn } from './myModule';
+
+
+
 ### Common
 1. WeakMap不会阻止垃圾回收。如果一个对象变得“不可访问”（例如，没有变量再引用它），则 WeakMap 允许将其从内存中清除，因为我们不再需要它了。
 
